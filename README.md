@@ -10,6 +10,41 @@ This project was built as part of my Agentic AI learning portfolio.
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart TD
+    A[User Question] --> B[retrieve_documents]
+    B --> C[Chroma VectorStoreRetriever]
+    C --> D[grade_documents]
+    D --> E[Amazon Bedrock Nova]
+    E --> F[Pydantic Structured Output]
+    F --> G{web_search_needed?}
+
+    G -- No --> H[generate_answer]
+    G -- Yes --> I[rewrite_question]
+    I --> J[Tavily Web Search]
+    J --> H
+
+    H --> K[Final Answer]
+```
+
+## LangGraph Workflow
+
+```mermaid
+flowchart TD
+    START --> retrieve_documents
+    retrieve_documents --> grade_documents
+    grade_documents --> route_after_grading
+
+    route_after_grading -->|Context sufficient| generate_answer
+    route_after_grading -->|More information needed| rewrite_question
+
+    rewrite_question --> web_search
+    web_search --> generate_answer
+    generate_answer --> END
+```
+
 ## Technologies
 
 - Python
@@ -53,6 +88,12 @@ Answer        │
 ```
 
 ---
+
+## LangSmith Observability
+
+The workflow is traced with LangSmith, including document retrieval, Amazon Bedrock model calls, structured document grading, conditional routing, and final-answer generation.
+
+![LangSmith trace](images/langsmith_trace.png)
 
 ## Project Structure
 
