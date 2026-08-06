@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# LangSmith cache
+.langsmith/
+
+# Chroma database
+chroma_db/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

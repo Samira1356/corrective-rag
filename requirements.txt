@@ -1,0 +1,11 @@
+python-dotenv
+pydantic
+
+langchain
+langchain-core
+langchain-aws
+langchain-chroma
+langchain-tavily
+
+langgraph
+chromadb
