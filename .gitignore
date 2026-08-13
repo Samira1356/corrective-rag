@@ -27,3 +27,6 @@ chroma_db/
 
 # Windows
 Thumbs.db
+
+# Ignore source PDF documents
+data/*.pdf

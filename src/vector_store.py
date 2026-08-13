@@ -1,57 +1,27 @@
 """
-Vectore store configuration for Corrective RAG project. 
-This file:
-1- load the sample documents.
-2- Create Bedrock embeddings.
-3- Store the documents in a vector Chroma. 
-4- Create a retriever for document search
-
+Crate the chroma vector store and retriever for the CAQH Index 2024 PDF.
 """
-
 from langchain_chroma import Chroma
-from langchain_core.vectorstores import VectorStoreRetriever
 
+from src.document_loader import load_pdf, split_documents
 from src.llm import get_embedding_model
-from src.sample_data import sample_documents
 
+PDF_PATH = "data/caqh_index_2024.pdf"
 
-def create_vector_store() -> Chroma:
-    """
-    Create an in-memory Chroma vectore store.
-
-    Each sample document is converted into an embedding and stored in Chroma. 
-    """
+def create_vector_store():
+    documents = load_pdf(PDF_PATH)
+    chunks = split_documents(documents) 
     embedding_model = get_embedding_model()
     vector_store = Chroma.from_documents(
-        documents=sample_documents,
+        documents=chunks,
         embedding=embedding_model,
-        collection_name="corrective_rag"
-
+        collection_name="caqh_index_2024",  
     )
     return vector_store
 
-def create_retriever(
-        vector_store = Chroma, 
-        number_of_documents: int = 3,
-        search_type: str = "similarity"      
-) -> VectorStoreRetriever:
-
-    """
-    Create a retriever from the chroma vector store.
-
-    Args:
-    vector_store (Chroma): The Chroma vector store instance.
-    number_of_documents (int): The number of documents to retrieve.
-    search_type (str): The type of search to perform, e.g., "similarity".
-
-    Returns:
-    VectorStoreRetriever: A retriever for the Chroma vector store that performs similarity search.
-    """
-    retriver = vector_store.as_retriever(
-    search_kwargs={
-        "k": number_of_documents,
-       }
+# the number of documents retrieved was updated from 3 to 5 due to better evaluation. 
+def create_retriever(vector_store, number_of_documents=5):
+    retriever = vector_store.as_retriever(
+        search_kwargs={"k": number_of_documents}
     )
-    return retriver
-
-
+    return retriever    

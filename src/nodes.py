@@ -37,7 +37,8 @@ vector_store = create_vector_store()
 # Create a retriever connect to vector store.
 retriever = create_retriever(
     vector_store=vector_store,
-    number_of_documents=3,
+    number_of_documents=5, 
+    # number has been updates from 3 to 5
     #search_type="similarity"
     )
 # Create the structured bedrock grader. 

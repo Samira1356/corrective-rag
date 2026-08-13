@@ -45,6 +45,12 @@ flowchart TD
     generate_answer --> END
 ```
 
+## LangSmith Observability
+
+LangSmith traces document retrieval, Amazon Bedrock model calls, structured document grading, conditional routing, and final-answer generation.
+
+![LangSmith execution trace](images/langsmith_trace.png)
+
 ## Technologies
 
 - Python
@@ -153,16 +159,71 @@ to retrieve additional relevant information.
 
 ---
 
+## Evaluation and Optimization
+
+The Corrective RAG pipeline was evaluated at both the retrieval and final-answer stages using Amazon Bedrock.
+
+### Retrieval Evaluation
+
+Retrieval quality was evaluated by using an LLM grader to determine whether the retrieved CAQH document chunks contained useful evidence for answering each question.
+
+| Configuration | Average Retrieval Score |
+| ------------- | ----------------------: |
+| k = 3         |                2.33 / 3 |
+| k = 5         |                3.00 / 3 |
+
+Increasing the number of retrieved chunks from 3 to 5 improved retrieval quality on the evaluation set.
+
+### Answer Evaluation
+
+Generated answers were compared with expected answers using a structured Bedrock evaluator.
+
+| Configuration              | Average Answer Score |
+| -------------------------- | -------------------: |
+| Initial generation prompt  |             2.40 / 3 |
+| Improved generation prompt |             3.00 / 3 |
+
+The generation prompt was improved to encourage complete answers that include important supporting details from the retrieved context.
+
+### Holdout Evaluation
+
+The optimized configuration was then tested against a separate set of questions that were not used during tuning.
+
+**Holdout score: 3.00 / 3**
+
+Final configuration:
+
+- Top 5 retrieved chunks
+- Amazon Titan embeddings
+- Chroma vector store
+- Bedrock Nova for document grading and answer generation
+- LLM-based retrieval and answer evaluation
+
+The evaluation set is intentionally small and the evaluator is LLM-based, so these results should be interpreted as project-level validation rather than a claim of universal accuracy.
+
+Detailed results are available in `docs/evaluation_results.md`.
+
 ## Future Improvements
 
-- PDF ingestion
-- Automatic chunking
-- Metadata filtering
-- RAG evaluation metrics
-- FastAPI deployment
-- Docker
-- AWS deployment
-- Conversation memory
+The current project already includes real PDF ingestion, chunking, semantic retrieval, LLM-based document grading, retrieval evaluation, answer evaluation, prompt optimization, holdout testing, and LangSmith tracing.
+
+The next improvements are:
+
+- Expand the evaluation dataset with more difficult and diverse questions
+- Add unsupported-question and hallucination testing
+- Add faithfulness evaluation to verify that answers stay grounded in retrieved context
+- Add retrieval precision and recall metrics
+- Compare different chunk sizes and chunk overlaps
+- Compare retrieval strategies such as similarity search and MMR
+- Add reranking for retrieved chunks
+- Support multiple healthcare documents and PDFs
+- Add metadata-based filtering
+- Add conversation memory
+- Expose the LangGraph workflow through a FastAPI REST API
+- Containerize the application with Docker
+- Deploy the application on AWS
+- Add CI/CD with GitHub Actions
+- Add production monitoring, latency tracking, and cost monitoring
 
 ---
 

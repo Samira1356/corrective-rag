@@ -1,20 +1,32 @@
 """
-Bedrock model configuration for the Corrective RAG project.
+Bedrock model configuration for the Corrective RAG workflow.
 
-This file creates:
+This file creates reusable Bedrock models.
 
-1. An embedding model
-   Converts text into numerical vectors.
+The current file has:
 
-2. A chat model
-   Reads prompts and generates responses.
+1. get_chat_model():
+   Creates the regular Bedrock Nova chat model.
+
+2. get_embedding_model():
+   Creates the Titan embedding model.
+
+3. get_document_grader():
+   Creates a structured Bedrock model that returns GradeDocument.
+
+4. get_evaluator():
+   Creates a structured Bedrock model that returns EvaluationResult.
+
+5. get_retrieval_evaluator():
+   Creates a structured Bedrock model that returns RetrievalEvaluation.
 """
 
 import os
 
 from dotenv import load_dotenv
 from langchain_aws import BedrockEmbeddings, ChatBedrockConverse
-from src.models import GradeDocument
+from src.models import (EvaluationResult, GradeDocument, RetrievalEvaluation)
+
 
 
 # Load variables from the project's .env file.
@@ -72,4 +84,28 @@ def get_document_grader():
     )
 
     return structured_grader
+from src.models import EvaluationResult
+
+
+def get_evaluator():
+
+    llm = get_chat_model()
+
+    evaluator = llm.with_structured_output(
+        EvaluationResult
+    )
+
+    return evaluator
+
+def get_retrieval_evaluator():
+    """
+    Create a structured Bedrock evaluator for retrieval quality.
+    """
+    llm = get_chat_model()
+
+    evaluator = llm.with_structured_output(
+        RetrievalEvaluation
+    )
+
+    return evaluator
 
