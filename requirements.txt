@@ -1,11 +1,17 @@
 python-dotenv
 pydantic
+pypdf
 
 langchain
 langchain-core
 langchain-aws
 langchain-chroma
 langchain-tavily
+langchain-community
+langchain-text-splitters
 
 langgraph
 chromadb
+
+fastapi
+uvicorn

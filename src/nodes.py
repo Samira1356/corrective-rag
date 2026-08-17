@@ -13,7 +13,7 @@ import os
 
 from dotenv import load_dotenv
 from langchain_core.documents import Document
-from langchain_tavily import TavilySearch
+#from langchain_tavily import TavilySearch
 
 
 from src.graph_state import GraphState
@@ -64,12 +64,13 @@ answer_generation_chain = (
 )
 
 # Create a Tavily web search tool.
+"""
 web_search_tool = TavilySearch(
     max_results=3,
     topic="general",
     include_answer=False,
     include_raw_content=False,
-)
+)"""
 
 # Node 1: Retrieve documents 
 def retrieve_documents(state: GraphState) -> dict:
