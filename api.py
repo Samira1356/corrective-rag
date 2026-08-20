@@ -56,3 +56,7 @@ def ask_question(request:QuestionRequest):
         "question": question, 
         "answer": final_state["answer"],
     }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
