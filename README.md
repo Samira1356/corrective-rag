@@ -203,12 +203,54 @@ The evaluation set is intentionally small and the evaluator is LLM-based, so the
 
 Detailed results are available in `docs/evaluation_results.md`.
 
-## Future Improvements
+## API Endpoints
 
-The current project already includes real PDF ingestion, chunking, semantic retrieval, LLM-based document grading, retrieval evaluation, answer evaluation, prompt optimization, holdout testing, and LangSmith tracing.
+The deployed FastAPI application exposes the following endpoints:
+
+### `GET /health`
+
+Lightweight health-check endpoint used by Amazon ECS.
+
+Example response:
+
+```json
+{
+  "status": "ok"
+}
+
+
+
+
+## Current Production Capabilities
+
+The project now includes:
+
+- Real PDF ingestion and document chunking
+- Semantic retrieval with Chroma
+- Amazon Bedrock embeddings
+- LLM-based document relevance grading
+- Corrective RAG routing with LangGraph
+- Retrieval evaluation
+- Answer evaluation
+- Prompt optimization and holdout testing
+- LangSmith tracing
+- FastAPI REST API
+- `POST /ask` endpoint for running the Corrective RAG workflow
+- `GET /health` endpoint for application health checks
+- Interactive API testing through FastAPI Swagger (`/docs`)
+- Docker containerization
+- Amazon ECR container image storage
+- Deployment to Amazon ECS using Fargate
+- Public HTTPS API access
+- ECS load-balancer health checking
+
+## Future Improvements
 
 The next improvements are:
 
+- Add production monitoring with Amazon CloudWatch
+- Add API latency, error-rate, and cost monitoring
+- Add CI/CD with GitHub Actions
 - Expand the evaluation dataset with more difficult and diverse questions
 - Add unsupported-question and hallucination testing
 - Add faithfulness evaluation to verify that answers stay grounded in retrieved context
@@ -219,13 +261,8 @@ The next improvements are:
 - Support multiple healthcare documents and PDFs
 - Add metadata-based filtering
 - Add conversation memory
-- Expose the LangGraph workflow through a FastAPI REST API
-- Containerize the application with Docker
-- Deploy the application on AWS
-- Add CI/CD with GitHub Actions
-- Add production monitoring, latency tracking, and cost monitoring
-
----
+- Add stronger API error handling and exception management
+- Add environment-based configuration and secrets management
 
 ## Author
 
@@ -234,3 +271,4 @@ The next improvements are:
 AI / Machine Learning Engineer
 
 This repository is part of my Agentic AI portfolio built while learning LangGraph, Amazon Bedrock, Retrieval-Augmented Generation (RAG), and production AI workflows.
+```
