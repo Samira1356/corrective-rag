@@ -217,9 +217,7 @@ Example response:
 {
   "status": "ok"
 }
-
-
-
+```
 
 ## Current Production Capabilities
 
@@ -271,4 +269,7 @@ The next improvements are:
 AI / Machine Learning Engineer
 
 This repository is part of my Agentic AI portfolio built while learning LangGraph, Amazon Bedrock, Retrieval-Augmented Generation (RAG), and production AI workflows.
+
+```
+
 ```
